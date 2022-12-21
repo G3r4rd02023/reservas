@@ -1,0 +1,41 @@
+﻿@model IEnumerable<reservas.Data.Entities.Edificio>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h5>Edificios</h5>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>            
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Activo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activo)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
