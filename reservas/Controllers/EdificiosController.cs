@@ -2,16 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using reservas.Data;
 using reservas.Data.Entities;
+using Vereyon.Web;
 
 namespace reservas.Controllers
 {
     public class EdificiosController : Controller
     {
         private readonly DataContext _context;
+        private readonly IFlashMessage _flashMessage;
 
-        public EdificiosController(DataContext context)
+        public EdificiosController(DataContext context, IFlashMessage flashMessage)
         {
             _context = context;
+            _flashMessage = flashMessage;
         }
 
         
@@ -56,23 +59,25 @@ namespace reservas.Controllers
                 {
                     _context.Add(edificio);
                     await _context.SaveChangesAsync();
+                    _flashMessage.Info("Edficio creado exitosamente!");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una edificio con ese nombre.");
+                        _flashMessage.Danger("Ya existe un edificio con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(exception.Message);
                 }
+                return RedirectToAction(nameof(Index));
             }
             return View(edificio);
         }
@@ -107,23 +112,24 @@ namespace reservas.Controllers
             {
                 try
                 {
-                    _context.Update(edificio);
+                    _context.Update(edificio);                    
                     await _context.SaveChangesAsync();
+                    _flashMessage.Info("Edficio actualizado exitosamente!");
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una edificio con ese nombre.");
+                        _flashMessage.Danger("Ya existe una edificio con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(exception.Message);
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -145,10 +151,19 @@ namespace reservas.Controllers
                 return NotFound();
             }
 
-            _context.Edificios.Remove(edificio);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Edificios.Remove(edificio);
+                await _context.SaveChangesAsync();
+                _flashMessage.Info("Registro borrado.");
+                
+            }
+            catch 
+            {
+                _flashMessage.Danger("No se puede borrar la categoría porque tiene registros relacionados.");
+            }
+
             return RedirectToAction(nameof(Index));
-            
         }                       
     }
 }
