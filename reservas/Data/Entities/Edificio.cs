@@ -13,5 +13,8 @@ namespace reservas.Data.Entities
         public string Name { get; set; }
         public bool Activo { get; set; }
         public ICollection<Aula> Aulas { get; set; }
+
+        [Display(Name = "Aulas")]
+        public int AulasNumber => Aulas == null ? 0 : Aulas.Count;
     }
 }

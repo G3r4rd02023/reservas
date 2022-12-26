@@ -33,6 +33,7 @@ namespace reservas.Controllers
             }
 
             var edificio = await _context.Edificios
+                .Include(e => e.Aulas)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (edificio == null)
             {

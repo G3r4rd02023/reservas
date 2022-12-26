@@ -1,9 +1,10 @@
-﻿@model reservas.Data.Entities.Edificio
-
+﻿@model reservas.Models.CreateAulaViewModel
 @{
     ViewData["Title"] = "Create";
     Layout = null;
 }
+
+<flash dismissable="true" />
 
 <hr />
 <div class="row">
@@ -11,9 +12,22 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+            <span class="required">*</span>
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+            <span class="required">*</span>
+                <label asp-for="Capacidad" class="control-label"></label>
+                <input asp-for="Capacidad" class="form-control" />
+                <span asp-validation-for="Capacidad" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+            <span class="required">*</span>
+                <label asp-for="EdificioId" class="control-label"></label>
+                <select asp-for="EdificioId" asp-items="Model.Edificios" class="form-control"></select>
+                <span asp-validation-for="EdificioId" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -21,13 +35,11 @@
                 </label>
             </div>
             <hr />
-            <div class="form-group">               
+            <div class="form-group">
                 <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal"><i class="fa fa-ban"></i> Cancelar</button>
             </div>
         </form>
     </div>
 </div>
-
-
 

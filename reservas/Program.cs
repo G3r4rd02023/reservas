@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using reservas.Data;
+using reservas.Helpers;
 using Vereyon.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<DataContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddScoped<ICombosHelper, CombosHelper>();
 builder.Services.AddFlashMessage();
 
 var app = builder.Build();
