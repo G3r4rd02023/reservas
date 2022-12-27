@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = null;
 }
 
 <flash dismissable="true" />
@@ -25,7 +26,7 @@
 
 <div>    
     <div>
-        <a asp-action="Index" class="btn btn-outline-success"><i class="fa-solid fa-arrow-rotate-left"></i> Regresar</a>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal"><i class="fa fa-ban"></i> Cancelar</button>
     </div>
 </div>
 
